@@ -19,16 +19,18 @@ class _TabsState extends State<Tabs> {
     return Scaffold(
       appBar: AppBar(
         title: Text('jdshop'),
+        centerTitle: true,
       ),
-      body: this._pageList[this._currentIndex],
+      body: _pageList[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            this._currentIndex = index;
+            _currentIndex = index;
           });
         },
         type: BottomNavigationBarType.fixed,
+        fixedColor: Colors.red,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

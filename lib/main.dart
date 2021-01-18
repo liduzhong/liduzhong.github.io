@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'pages/tabs/Tabs.dart';
 import 'routers/router.dart';
 
 void main() => runApp(MyApp());
