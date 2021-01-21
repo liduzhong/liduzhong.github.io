@@ -26,7 +26,7 @@ class ProductItemModel {
   String title;
   String cid;
   Object price;
-  String oldPrice;
+  Object oldPrice;
   String pic;
   String sPic;
 

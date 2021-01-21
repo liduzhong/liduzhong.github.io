@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import '../../model/focusModel.dart';
 import '../../model/productModel.dart';
+import '../../utils/tools.dart';
 import '../../services/ScreenAdaper.dart';
 import '../../config/Config.dart';
 
@@ -13,7 +14,10 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   List _focusList = [];
   List _productList = [];
   List _bestList = [];
@@ -62,10 +66,8 @@ class _HomePageState extends State<HomePage> {
         aspectRatio: 2 / 1,
         child: Swiper(
           itemBuilder: (BuildContext context, int index) {
-            String pic = this._focusList[index].pic;
-            pic = Config.domain + pic.replaceAll('\\', '/');
             return Image.network(
-              pic,
+              Tools.formatImgUrl(this._focusList[index].pic),
               fit: BoxFit.fill,
             );
           },
@@ -106,8 +108,6 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, int index) {
-              String pic = this._productList[index].pic;
-              pic = Config.domain + pic.replaceAll('\\', '/');
               return Column(
                 children: <Widget>[
                   Container(
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     height: ScreenAdaper.height(140),
                     margin: EdgeInsets.only(right: ScreenAdaper.width(20)),
                     child: Image.network(
-                      pic,
+                      Tools.formatImgUrl(this._productList[index].pic),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -147,9 +147,6 @@ class _HomePageState extends State<HomePage> {
           spacing: 10,
           runSpacing: 10,
           children: this._bestList.map((value) {
-            String sPic = Config.domain + value.sPic;
-            sPic = sPic.replaceAll('\\', '/');
-
             return Container(
                 width: itemWidth,
                 padding: EdgeInsets.all(ScreenAdaper.width(10)),
@@ -165,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                       child: AspectRatio(
                         aspectRatio: 1 / 1,
                         child: Image.network(
-                          sPic,
+                          Tools.formatImgUrl(value.sPic),
                           fit: BoxFit.cover,
                         ),
                       ),
