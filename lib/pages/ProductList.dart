@@ -24,6 +24,14 @@ class _ProductListPageState extends State<ProductListPage> {
   int pageSize = 10;
   bool canLoad = true;
   String sort = '';
+  bool _hasMore = true;
+  List _headTabs = [
+    {'id': 1, 'name': '综合', 'fileds': 'all', 'sort': -1},
+    {'id': 2, 'name': '销量', 'fileds': 'salecount', 'sort': -1},
+    {'id': 3, 'name': '价格', 'fileds': 'price', 'sort': -1},
+    {'id': 4, 'name': '筛选'}
+  ];
+  int _selectedTabId = 1;
   // is_best 精华  is_hot 热门 is_new 新品 sort 排序 价格升序 sort=price_1 价格降序 sort=price_-1 销量升序 sort=salecount_1 销量降序 sort=salecount_-1
   @override
   void initState() {
@@ -35,7 +43,7 @@ class _ProductListPageState extends State<ProductListPage> {
       // _scrollControler.position.maxScrollExtent  获取页面的高度
       if (_scrollControler.position.pixels >
           (_scrollControler.position.maxScrollExtent - 20)) {
-        if (this.canLoad) {
+        if (this.canLoad && this._hasMore) {
           _getProductData();
         }
       }
@@ -46,18 +54,40 @@ class _ProductListPageState extends State<ProductListPage> {
     setState(() {
       this.canLoad = false;
     });
-    print(canLoad);
     String api = Config.domain +
-        "api/plist?cid=${widget.arguments['cid']}&page=${this.page}pageSize=${this.pageSize}&sort=${this.sort}";
+        "api/plist?cid=${widget.arguments['cid']}&page=${this.page}&pageSize=${this.pageSize}&sort=${this.sort}";
     var result = await Dio().get(api);
     var productList = ProductModel.fromJson(result.data);
+    if (productList.result.length < this.pageSize) {
+      setState(() {
+        this._hasMore = false;
+        this.canLoad = false;
+      });
+    } else {
+      setState(() {
+        this.page++;
+        this.canLoad = true;
+      });
+    }
     setState(() {
       this._productList.addAll(productList.result);
-      this.page++;
       this.isLoaded = true;
-      this.canLoad = true;
     });
     print(api);
+  }
+
+  // 展示更多
+  Widget showMore(int index) {
+    bool last = index == (this._productList.length - 1);
+    if (this._hasMore) {
+      return last ? LoadingWidget() : Text('');
+    } else {
+      return last
+          ? Container(
+              padding: EdgeInsets.only(top: 20, bottom: 20),
+              child: Text('--- 我是有底线的 ---'))
+          : Text('');
+    }
   }
 
   // 产品列表
@@ -150,9 +180,7 @@ class _ProductListPageState extends State<ProductListPage> {
                         ),
                       ],
                     ),
-                    (index == this._productList.length - 1)
-                        ? LoadingWidget()
-                        : Text('')
+                    showMore(index)
                   ],
                 ),
               );
@@ -166,6 +194,38 @@ class _ProductListPageState extends State<ProductListPage> {
     }
   }
 
+  // 点击头部tab
+  void _onTabClick(int id) {
+    if (id == 4) {
+      _scaffoldKey.currentState.openEndDrawer();
+    }
+    setState(() {
+      this.sort =
+          '${this._headTabs[id - 1]['fileds']}_${this._headTabs[id - 1]['sort']}';
+      this._headTabs[id - 1]['sort'] *= -1;
+      this.page = 1;
+      this.canLoad = true;
+      this._productList = [];
+      this._hasMore = true;
+      this._selectedTabId = id;
+      this.isLoaded = false;
+      this._getProductData();
+      //页面回滚到顶部
+      _scrollControler.jumpTo(0);
+    });
+  }
+
+  //显示箭头
+  _showArrow(int id) {
+    if (id == 2 || id == 3) {
+      if (this._headTabs[id - 1]['sort'] == -1) {
+        return Icon(Icons.arrow_drop_down, color: Colors.red);
+      }
+      return Icon(Icons.arrow_drop_up, color: Colors.red);
+    }
+    return Text('');
+  }
+
   // 筛选
   Widget _topFilter() {
     return Positioned(
@@ -175,56 +235,30 @@ class _ProductListPageState extends State<ProductListPage> {
       child: Container(
         color: Colors.white,
         child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      0, ScreenAdaper.height(16), ScreenAdaper.height(16), 0),
-                  child: Text('综合',
-                      style: TextStyle(color: Colors.red),
-                      textAlign: TextAlign.center),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      0, ScreenAdaper.height(16), ScreenAdaper.height(16), 0),
-                  child: Text('销量', textAlign: TextAlign.center),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      0, ScreenAdaper.height(16), ScreenAdaper.height(16), 0),
-                  child: Text('价格', textAlign: TextAlign.center),
-                ),
-              ),
-            ),
-            Expanded(
+          children: this._headTabs.map((value) {
+            return Expanded(
               flex: 1,
               child: InkWell(
                 onTap: () {
-                  _scaffoldKey.currentState.openEndDrawer();
+                  _onTabClick(value['id']);
                 },
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      0, ScreenAdaper.height(16), ScreenAdaper.height(16), 0),
-                  child: Text('筛选', textAlign: TextAlign.center),
-                ),
+                    padding: EdgeInsets.fromLTRB(
+                        0, ScreenAdaper.height(16), ScreenAdaper.height(16), 0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('${value["name"]}',
+                              style: TextStyle(
+                                  color: (this._selectedTabId == value['id'])
+                                      ? Colors.red
+                                      : Colors.black),
+                              textAlign: TextAlign.center),
+                          _showArrow(value['id'])
+                        ])),
               ),
-            ),
-          ],
+            );
+          }).toList(),
         ),
       ),
     );
