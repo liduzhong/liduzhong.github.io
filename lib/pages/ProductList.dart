@@ -20,18 +20,21 @@ class _ProductListPageState extends State<ProductListPage> {
   ScrollController _scrollControler = new ScrollController();
   List _productList = [];
   bool isLoaded = false;
-  int page = 1;
-  int pageSize = 10;
-  bool canLoad = true;
-  String sort = '';
+  int _page = 1;
+  int _pageSize = 10;
+  bool _canLoad = true;
+  String _sort = '';
   bool _hasMore = true;
   List _headTabs = [
-    {'id': 1, 'name': '综合', 'fileds': 'all', 'sort': -1},
-    {'id': 2, 'name': '销量', 'fileds': 'salecount', 'sort': -1},
-    {'id': 3, 'name': '价格', 'fileds': 'price', 'sort': -1},
-    {'id': 4, 'name': '筛选'}
+    {'id': 1, 'name': '综合', 'fileds': 'all', 'sort': -1, 'arrow': false},
+    {'id': 2, 'name': '销量', 'fileds': 'salecount', 'sort': -1, 'arrow': true},
+    {'id': 3, 'name': '价格', 'fileds': 'price', 'sort': -1, 'arrow': true},
+    {'id': 4, 'name': '筛选', 'arrow': false}
   ];
   int _selectedTabId = 1;
+  // 点击头部排序次数
+  int clickCount = 0;
+  int clickId = 0;
   // is_best 精华  is_hot 热门 is_new 新品 sort 排序 价格升序 sort=price_1 价格降序 sort=price_-1 销量升序 sort=salecount_1 销量降序 sort=salecount_-1
   @override
   void initState() {
@@ -43,7 +46,7 @@ class _ProductListPageState extends State<ProductListPage> {
       // _scrollControler.position.maxScrollExtent  获取页面的高度
       if (_scrollControler.position.pixels >
           (_scrollControler.position.maxScrollExtent - 20)) {
-        if (this.canLoad && this._hasMore) {
+        if (this._canLoad && this._hasMore) {
           _getProductData();
         }
       }
@@ -52,21 +55,21 @@ class _ProductListPageState extends State<ProductListPage> {
 
   _getProductData() async {
     setState(() {
-      this.canLoad = false;
+      this._canLoad = false;
     });
     String api = Config.domain +
-        "api/plist?cid=${widget.arguments['cid']}&page=${this.page}&pageSize=${this.pageSize}&sort=${this.sort}";
+        "api/plist?cid=${widget.arguments['cid']}&page=${this._page}&pageSize=${this._pageSize}&sort=${this._sort}";
     var result = await Dio().get(api);
     var productList = ProductModel.fromJson(result.data);
-    if (productList.result.length < this.pageSize) {
+    if (productList.result.length < this._pageSize) {
       setState(() {
         this._hasMore = false;
-        this.canLoad = false;
+        this._canLoad = false;
       });
     } else {
       setState(() {
-        this.page++;
-        this.canLoad = true;
+        this._page++;
+        this._canLoad = true;
       });
     }
     setState(() {
@@ -196,15 +199,30 @@ class _ProductListPageState extends State<ProductListPage> {
 
   // 点击头部tab
   void _onTabClick(int id) {
+    if (this.clickId != id) {
+      this.clickCount = 0;
+    } else {
+      this.clickCount++;
+    }
     if (id == 4) {
       _scaffoldKey.currentState.openEndDrawer();
+      return;
     }
     setState(() {
-      this.sort =
+      this.clickId = id;
+      if (this.clickCount != 0) {
+        this._headTabs[id - 1]['sort'] *= -1;
+      }
+      this._sort =
           '${this._headTabs[id - 1]['fileds']}_${this._headTabs[id - 1]['sort']}';
-      this._headTabs[id - 1]['sort'] *= -1;
-      this.page = 1;
-      this.canLoad = true;
+      // 这里重置箭头方向
+      this._headTabs.map((value) {
+        if (value['id'] != id) {
+          value['sort'] = -1;
+        }
+      }).toList();
+      this._page = 1;
+      this._canLoad = true;
       this._productList = [];
       this._hasMore = true;
       this._selectedTabId = id;
@@ -216,12 +234,14 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 
   //显示箭头
-  _showArrow(int id) {
-    if (id == 2 || id == 3) {
-      if (this._headTabs[id - 1]['sort'] == -1) {
-        return Icon(Icons.arrow_drop_down, color: Colors.red);
+  Widget _showArrow(int id) {
+    var selected = this._headTabs[id - 1];
+    var color = this._selectedTabId == id ? Colors.red : Colors.black;
+    if (selected['arrow']) {
+      if (selected['sort'] == -1) {
+        return Icon(Icons.arrow_drop_down, color: color);
       }
-      return Icon(Icons.arrow_drop_up, color: Colors.red);
+      return Icon(Icons.arrow_drop_up, color: color);
     }
     return Text('');
   }

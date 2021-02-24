@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:jdshop/widget/LoadingWidget.dart';
 import '../../model/focusModel.dart';
 import '../../model/productModel.dart';
 import '../../utils/tools.dart';
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage>
         ),
       );
     } else {
-      return Text('加载中...');
+      return Text('');
     }
   }
 
@@ -108,27 +109,30 @@ class _HomePageState extends State<HomePage>
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, int index) {
-              return Column(
-                children: <Widget>[
-                  Container(
-                    width: ScreenAdaper.width(140),
-                    height: ScreenAdaper.height(140),
-                    margin: EdgeInsets.only(right: ScreenAdaper.width(20)),
-                    child: Image.network(
-                      Tools.formatImgUrl(this._productList[index].pic),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '￥${this._productList[index].price}',
-                      style: TextStyle(
-                        color: Colors.red,
+              return Container(
+                margin: EdgeInsets.only(left: 5, right: 5),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: ScreenAdaper.width(140),
+                      height: ScreenAdaper.height(140),
+                      margin: EdgeInsets.only(right: ScreenAdaper.width(20)),
+                      child: Image.network(
+                        Tools.formatImgUrl(this._productList[index].pic),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                ],
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        '￥${this._productList[index].price}',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
             itemCount: this._productList.length),

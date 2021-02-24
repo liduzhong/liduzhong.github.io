@@ -11,10 +11,15 @@ class LoadingWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              width: 20,
+              height: 20,
+              margin: EdgeInsets.only(right: 10),
+              child: CircularProgressIndicator(
+                strokeWidth: 1,
+              ),
+            ),
             Text('加载中...', style: TextStyle(fontSize: 16)),
-            CircularProgressIndicator(
-              strokeWidth: 1,
-            )
           ],
         ),
       ),

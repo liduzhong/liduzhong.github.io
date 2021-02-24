@@ -81,7 +81,7 @@ class _CategoryPageState extends State<CategoryPage>
       return Container(
         width: leftWidth,
         height: double.infinity,
-        child: Text('加载中...'),
+        child: Text(''),
       );
     }
   }
@@ -143,7 +143,7 @@ class _CategoryPageState extends State<CategoryPage>
         child: Container(
           height: double.infinity,
           padding: EdgeInsets.all(10),
-          child: Text('加载中...'),
+          child: Text(''),
         ),
       );
     }
