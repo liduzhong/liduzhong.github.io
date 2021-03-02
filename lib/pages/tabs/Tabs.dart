@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jdshop/services/ScreenAdaper.dart';
 import 'Cart.dart';
 import 'Home.dart';
 import 'Category.dart';
@@ -24,10 +25,52 @@ class _TabsState extends State<Tabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('jdshop'),
-        centerTitle: true,
-      ),
+      appBar: _currentIndex != 3
+          ? AppBar(
+              leading: IconButton(
+                icon: Icon(
+                  Icons.center_focus_weak,
+                  color: Colors.black54,
+                ),
+                onPressed: null,
+              ),
+              title: InkWell(
+                child: Container(
+                    width: ScreenAdaper.width(600),
+                    height: ScreenAdaper.height(60),
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.search, size: 25, color: Colors.black12),
+                        Text('笔记本电脑',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 16,
+                            ))
+                      ],
+                    )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/search');
+                },
+              ),
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.message,
+                    color: Colors.black54,
+                  ),
+                  onPressed: null,
+                ),
+              ],
+              centerTitle: true,
+            )
+          : AppBar(centerTitle: true, title: Text('个人中心')),
       // body: _pageList[_currentIndex],
       // IndexedStack方法让页面层叠，缺点：刚进来的时候会加载全部层叠的页面数据
       /* body: IndexedStack(
@@ -36,6 +79,13 @@ class _TabsState extends State<Tabs> {
       ), */
       body: PageView(
         controller: this._pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        // 禁止滑动
+        // physics: NeverScrollableScrollPhysics(),
         children: this._pageList,
       ),
       bottomNavigationBar: BottomNavigationBar(
