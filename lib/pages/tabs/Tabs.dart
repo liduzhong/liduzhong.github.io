@@ -32,29 +32,30 @@ class _TabsState extends State<Tabs> {
                   Icons.center_focus_weak,
                   color: Colors.black54,
                 ),
-                onPressed: null,
+                onPressed: () {},
               ),
               title: InkWell(
                 child: Container(
-                    width: ScreenAdaper.width(600),
-                    height: ScreenAdaper.height(60),
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(30),
-                      ),
+                  padding: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.search, size: 25, color: Colors.black12),
-                        Text('笔记本电脑',
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 16,
-                            ))
-                      ],
-                    )),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.search, size: 25, color: Colors.black12),
+                      Text(
+                        '笔记本电脑',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 onTap: () {
                   Navigator.pushNamed(context, '/search');
                 },
@@ -65,7 +66,7 @@ class _TabsState extends State<Tabs> {
                     Icons.message,
                     color: Colors.black54,
                   ),
-                  onPressed: null,
+                  onPressed: () {},
                 ),
               ],
               centerTitle: true,

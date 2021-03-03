@@ -57,8 +57,13 @@ class _ProductListPageState extends State<ProductListPage> {
     setState(() {
       this._canLoad = false;
     });
-    String api = Config.domain +
-        "api/plist?cid=${widget.arguments['cid']}&page=${this._page}&pageSize=${this._pageSize}&sort=${this._sort}";
+    String api;
+    api = widget.arguments['cid'] == null
+        ? Config.domain +
+            "api/plist?search=${widget.arguments['keyword']}&page=${this._page}&pageSize=${this._pageSize}&sort=${this._sort}"
+        : Config.domain +
+            "api/plist?cid=${widget.arguments['cid']}&page=${this._page}&pageSize=${this._pageSize}&sort=${this._sort}";
+
     var result = await Dio().get(api);
     var productList = ProductModel.fromJson(result.data);
     if (productList.result.length < this._pageSize) {
@@ -119,22 +124,24 @@ class _ProductListPageState extends State<ProductListPage> {
                   children: [
                     Row(
                       children: [
-                        Container(
-                          margin:
-                              EdgeInsets.only(right: ScreenAdaper.width(20)),
-                          child: Image.network(
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            margin:
+                                EdgeInsets.only(right: ScreenAdaper.width(20)),
+                            child: Image.network(
                               Tools.formatImgUrl(this._productList[index].pic),
-                              fit: BoxFit.cover,
-                              width: ScreenAdaper.width(200),
-                              height: ScreenAdaper.height(200)),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
                         Expanded(
-                          flex: 1,
+                          flex: 7,
                           child: Container(
                             padding: EdgeInsets.only(
                                 top: ScreenAdaper.height(10),
                                 bottom: ScreenAdaper.height(10)),
-                            height: ScreenAdaper.height(200),
+                            height: ScreenAdaper.height(180),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,

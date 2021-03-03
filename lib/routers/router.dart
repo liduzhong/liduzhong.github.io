@@ -6,7 +6,7 @@ import '../pages/ProductList.dart';
 // 添加路由路径
 final routes = {
   '/': (context) => Tabs(),
-  '/search': (context, {arguments}) => SearchPage(keyword: arguments),
+  '/search': (context) => SearchPage(),
   '/product': (context, {arguments}) => ProductListPage(arguments: arguments),
 };
 
