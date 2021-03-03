@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import '../storage/storage.dart';
 import '../services/ScreenAdaper.dart';
+import 'dart:async';
+import '../utils/tools.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key key}) : super(key: key);
@@ -24,6 +29,7 @@ class _SearchPageState extends State<SearchPage> {
         tempHistory.add(value);
       }
     });
+    setStorage('historyList', tempHistory.toString());
     setState(() {
       _history = tempHistory;
     });
@@ -34,6 +40,15 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    // 获取缓存数据
+    getStorage('historyList').then((value) {
+      List history = value.split(',');
+      print(history.runtimeType.toString());
+      print(history);
+      setState(() {
+        _history = value ?? [];
+      });
+    });
     _keywordControler = new TextEditingController(text: '');
   }
 

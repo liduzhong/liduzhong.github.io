@@ -104,22 +104,32 @@ class _HomePageState extends State<HomePage>
     if (this._productList.length > 0) {
       return Container(
         width: double.infinity,
-        height: ScreenAdaper.height(220),
+        height: ScreenAdaper.height(280),
         padding: EdgeInsets.all(ScreenAdaper.width(20)),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, int index) {
               return Container(
+                color: Colors.white,
                 margin: EdgeInsets.only(left: 5, right: 5),
                 child: Column(
                   children: <Widget>[
                     Container(
-                      width: ScreenAdaper.width(140),
-                      height: ScreenAdaper.height(140),
-                      margin: EdgeInsets.only(right: ScreenAdaper.width(20)),
+                      width: ScreenAdaper.width(200),
+                      height: ScreenAdaper.height(200),
+                      /* decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 1,
+                        ),
+                      ), */
+                      margin: EdgeInsets.only(bottom: 5),
+                      padding: EdgeInsets.only(
+                          left: ScreenAdaper.width(20),
+                          right: ScreenAdaper.width(20)),
                       child: Image.network(
                         Tools.formatImgUrl(this._productList[index].pic),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Align(
