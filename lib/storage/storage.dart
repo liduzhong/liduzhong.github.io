@@ -1,11 +1,23 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future setStorage(String key, String value) async {
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  sharedPreferences.setString(key, value);
-}
+class Storage {
+  static Future setString(String key, String value) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString(key, value);
+  }
 
-Future getStorage(String key) async {
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  return sharedPreferences.get(key);
+  static Future getString(String key) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.get(key);
+  }
+
+  static Future remove(String key) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.remove(key);
+  }
+
+  static Future clear() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.clear();
+  }
 }
