@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import '../pages/tabs/Tabs.dart';
-import '../pages/Search.dart';
-import '../pages/ProductList.dart';
+import '../pages/search/Search.dart';
+import '../pages/productList/ProductList.dart';
+import '../pages/productDetail/productDetail.dart';
 
 // 添加路由路径
 final routes = {
   '/': (context) => Tabs(),
   '/search': (context) => SearchPage(),
   '/product': (context, {arguments}) => ProductListPage(arguments: arguments),
+  '/product-detail': (context, {arguments}) =>
+      ProductDetailPage(id: arguments['id']),
 };
 
 // 固定写法

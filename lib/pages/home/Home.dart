@@ -5,7 +5,7 @@ import 'package:jdshop/widget/LoadingWidget.dart';
 import '../../model/focusModel.dart';
 import '../../model/productModel.dart';
 import '../../utils/tools.dart';
-import '../../services/ScreenAdaper.dart';
+import '../../services/ScreenAdapter.dart';
 import '../../config/Config.dart';
 
 class HomePage extends StatefulWidget {
@@ -78,18 +78,18 @@ class _HomePageState extends State<HomePage>
         ),
       );
     } else {
-      return Text('');
+      return Container();
     }
   }
 
   // 公共的标题
   Widget _titleWidget(String value) {
     return Container(
-      margin: EdgeInsets.only(left: ScreenAdaper.width(20)),
-      padding: EdgeInsets.only(left: ScreenAdaper.width(20)),
+      margin: EdgeInsets.only(left: ScreenAdapter.width(20)),
+      padding: EdgeInsets.only(left: ScreenAdapter.width(20)),
       decoration: BoxDecoration(
         border: Border(
-          left: BorderSide(width: ScreenAdaper.width(10), color: Colors.red),
+          left: BorderSide(width: ScreenAdapter.width(10), color: Colors.red),
         ),
       ),
       child: Text(
@@ -104,57 +104,63 @@ class _HomePageState extends State<HomePage>
     if (this._productList.length > 0) {
       return Container(
         width: double.infinity,
-        height: ScreenAdaper.height(280),
-        padding: EdgeInsets.all(ScreenAdaper.width(20)),
+        height: ScreenAdapter.height(280),
+        padding: EdgeInsets.all(ScreenAdapter.width(20)),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, int index) {
-              return Container(
-                color: Colors.white,
-                margin: EdgeInsets.only(left: 5, right: 5),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: ScreenAdaper.width(200),
-                      height: ScreenAdaper.height(200),
-                      /* decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.red,
-                          width: 1,
-                        ),
-                      ), */
-                      margin: EdgeInsets.only(bottom: 5),
-                      padding: EdgeInsets.only(
-                          left: ScreenAdaper.width(20),
-                          right: ScreenAdaper.width(20)),
-                      child: Image.network(
-                        Tools.formatImgUrl(this._productList[index].pic),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        '￥${this._productList[index].price}',
-                        style: TextStyle(
-                          color: Colors.red,
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/product-detail',
+                      arguments: {'id': this._productList[index].sId});
+                },
+                child: Container(
+                  color: Colors.white,
+                  margin: EdgeInsets.only(left: 5, right: 5),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: ScreenAdapter.width(200),
+                        height: ScreenAdapter.height(200),
+                        /* decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.red,
+                            width: 1,
+                          ),
+                        ), */
+                        margin: EdgeInsets.only(bottom: 5),
+                        padding: EdgeInsets.only(
+                            left: ScreenAdapter.width(20),
+                            right: ScreenAdapter.width(20)),
+                        child: Image.network(
+                          Tools.formatImgUrl(this._productList[index].pic),
+                          fit: BoxFit.contain,
                         ),
                       ),
-                    ),
-                  ],
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '￥${this._productList[index].price}',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
             itemCount: this._productList.length),
       );
     } else {
-      return Text('');
+      return Container();
     }
   }
 
   // 热门推荐
   Widget _bestProductListWidget() {
-    var itemWidth = (ScreenAdaper.getScreenWidth() - 30) / 2;
+    var itemWidth = (ScreenAdapter.getScreenWidth() - 30) / 2;
     return Container(
       padding: EdgeInsets.all(10),
       child: Wrap(
@@ -163,7 +169,7 @@ class _HomePageState extends State<HomePage>
           children: this._bestList.map((value) {
             return Container(
                 width: itemWidth,
-                padding: EdgeInsets.all(ScreenAdaper.width(10)),
+                padding: EdgeInsets.all(ScreenAdapter.width(10)),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black12,
@@ -183,8 +189,8 @@ class _HomePageState extends State<HomePage>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: ScreenAdaper.height(10),
-                          bottom: ScreenAdaper.height(10)),
+                          top: ScreenAdapter.height(10),
+                          bottom: ScreenAdapter.height(10)),
                       child: Text(
                         value.title,
                         style: TextStyle(
@@ -196,8 +202,8 @@ class _HomePageState extends State<HomePage>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: ScreenAdaper.height(10),
-                          bottom: ScreenAdaper.height(10)),
+                          top: ScreenAdapter.height(10),
+                          bottom: ScreenAdapter.height(10)),
                       child: Stack(
                         children: [
                           Align(
@@ -229,11 +235,11 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    ScreenAdaper.init(context);
+    ScreenAdapter.init(context);
     return ListView(
       children: <Widget>[
         _swiperWidget(),
-        SizedBox(height: ScreenAdaper.width(20)),
+        SizedBox(height: ScreenAdapter.width(20)),
         _titleWidget('猜你喜欢'),
         _hotProductListWidget(),
         _titleWidget('热门推荐'),

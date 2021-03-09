@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../config/Config.dart';
-import '../../services/ScreenAdaper.dart';
+import '../../services/ScreenAdapter.dart';
 import '../../utils/tools.dart';
 import '../../model/categoryModel.dart';
 
@@ -81,7 +81,7 @@ class _CategoryPageState extends State<CategoryPage>
       return Container(
         width: leftWidth,
         height: double.infinity,
-        child: Text(''),
+        child: Container(),
       );
     }
   }
@@ -143,7 +143,7 @@ class _CategoryPageState extends State<CategoryPage>
         child: Container(
           height: double.infinity,
           padding: EdgeInsets.all(10),
-          child: Text(''),
+          child: Container(),
         ),
       );
     }
@@ -151,9 +151,9 @@ class _CategoryPageState extends State<CategoryPage>
 
   @override
   Widget build(BuildContext context) {
-    ScreenAdaper.init(context);
-    var leftWidth = ScreenAdaper.getScreenWidth() / 4;
-    var rightItemWidth = (ScreenAdaper.getScreenWidth() - leftWidth - 40) / 3;
+    ScreenAdapter.init(context);
+    var leftWidth = ScreenAdapter.getScreenWidth() / 4;
+    var rightItemWidth = (ScreenAdapter.getScreenWidth() - leftWidth - 40) / 3;
     return Row(
       children: [
         _leftCateWidget(leftWidth),

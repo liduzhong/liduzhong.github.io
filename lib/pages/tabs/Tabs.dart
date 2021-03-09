@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../utils/event_bus.dart';
 import '../../storage/storage.dart';
-import '../../services/ScreenAdaper.dart';
-import 'Cart.dart';
-import 'Home.dart';
-import 'Category.dart';
-import 'User.dart';
+import '../../services/ScreenAdapter.dart';
+import '../cart/Cart.dart';
+import '../home/Home.dart';
+import '../category/Category.dart';
+import '../user/User.dart';
 
 class Tabs extends StatefulWidget {
   Tabs({Key key}) : super(key: key);

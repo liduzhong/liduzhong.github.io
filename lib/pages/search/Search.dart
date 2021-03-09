@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../storage/storage.dart';
-import '../services/ScreenAdaper.dart';
-import '../utils/event_bus.dart';
+import '../../storage/storage.dart';
+import '../../services/ScreenAdapter.dart';
+import '../../utils/event_bus.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key key}) : super(key: key);
@@ -74,8 +74,8 @@ class _SearchPageState extends State<SearchPage> {
   //搜索框
   Widget _buildTitle() {
     return Container(
-      width: ScreenAdaper.width(540),
-      height: ScreenAdaper.height(60),
+      width: ScreenAdapter.width(540),
+      height: ScreenAdapter.height(60),
       padding: EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: Colors.black12,
@@ -138,7 +138,7 @@ class _SearchPageState extends State<SearchPage> {
   // 内容
   Widget _buildContent() {
     return Container(
-      padding: EdgeInsets.all(ScreenAdaper.width(20)),
+      padding: EdgeInsets.all(ScreenAdapter.width(20)),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,7 +147,7 @@ class _SearchPageState extends State<SearchPage> {
             Row(
               children: [
                 Container(
-                  width: ScreenAdaper.width(10),
+                  width: ScreenAdapter.width(10),
                   height: 20,
                   color: Colors.red,
                   margin: EdgeInsets.only(right: 10),

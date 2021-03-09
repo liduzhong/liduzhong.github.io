@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../utils/tools.dart';
-import '../config/Config.dart';
-import '../services/ScreenAdaper.dart';
-import '../model/productModel.dart';
-import '../widget/LoadingWidget.dart';
+import '../../utils/tools.dart';
+import '../../config/Config.dart';
+import '../../services/ScreenAdapter.dart';
+import '../../model/productModel.dart';
+import '../../widget/LoadingWidget.dart';
 
 class ProductListPage extends StatefulWidget {
-  Map arguments;
+  final Map arguments;
   ProductListPage({Key key, this.arguments}) : super(key: key);
 
   @override
@@ -88,13 +88,13 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget showMore(int index) {
     bool last = index == (this._productList.length - 1);
     if (this._hasMore) {
-      return last ? LoadingWidget() : Text('');
+      return last ? LoadingWidget() : Container();
     } else {
       return last
           ? Container(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Text('--- 我是有底线的 ---'))
-          : Text('');
+          : Container();
     }
   }
 
@@ -104,7 +104,7 @@ class _ProductListPageState extends State<ProductListPage> {
       if (this._productList.length == 0) {
         return Container(
           width: double.infinity,
-          margin: EdgeInsets.only(top: ScreenAdaper.height(80)),
+          margin: EdgeInsets.only(top: ScreenAdapter.height(80)),
           child: Center(
             child: Text('暂无数据'),
           ),
@@ -112,7 +112,7 @@ class _ProductListPageState extends State<ProductListPage> {
       } else {
         return Container(
           width: double.infinity,
-          margin: EdgeInsets.only(top: ScreenAdaper.height(80)),
+          margin: EdgeInsets.only(top: ScreenAdapter.height(80)),
           child: ListView.builder(
             controller: _scrollControler,
             itemBuilder: (context, index) {
@@ -128,7 +128,7 @@ class _ProductListPageState extends State<ProductListPage> {
                           flex: 3,
                           child: Container(
                             margin:
-                                EdgeInsets.only(right: ScreenAdaper.width(20)),
+                                EdgeInsets.only(right: ScreenAdapter.width(20)),
                             child: Image.network(
                               Tools.formatImgUrl(this._productList[index].pic),
                               fit: BoxFit.contain,
@@ -139,9 +139,9 @@ class _ProductListPageState extends State<ProductListPage> {
                           flex: 7,
                           child: Container(
                             padding: EdgeInsets.only(
-                                top: ScreenAdaper.height(10),
-                                bottom: ScreenAdaper.height(10)),
-                            height: ScreenAdaper.height(180),
+                                top: ScreenAdapter.height(10),
+                                bottom: ScreenAdapter.height(10)),
+                            height: ScreenAdapter.height(180),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,15 +250,15 @@ class _ProductListPageState extends State<ProductListPage> {
       }
       return Icon(Icons.arrow_drop_up, color: color);
     }
-    return Text('');
+    return Container();
   }
 
   // 筛选
   Widget _topFilter() {
     return Positioned(
       top: 0,
-      width: ScreenAdaper.width(750),
-      height: ScreenAdaper.height(80),
+      width: ScreenAdapter.width(750),
+      height: ScreenAdapter.height(80),
       child: Container(
         color: Colors.white,
         child: Row(
@@ -270,8 +270,8 @@ class _ProductListPageState extends State<ProductListPage> {
                   _onTabClick(value['id']);
                 },
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        0, ScreenAdaper.height(16), ScreenAdaper.height(16), 0),
+                    padding: EdgeInsets.fromLTRB(0, ScreenAdapter.height(16),
+                        ScreenAdapter.height(16), 0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -293,13 +293,13 @@ class _ProductListPageState extends State<ProductListPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenAdaper.init(context);
+    ScreenAdapter.init(context);
     return Container(
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text('产品详情'),
-          actions: [Text('')],
+          actions: [Container()],
         ),
         body: Stack(
           children: [
