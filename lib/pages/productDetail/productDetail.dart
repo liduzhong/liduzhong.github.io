@@ -59,66 +59,69 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
+  Widget _buildContent() {
+    return Stack(
+      children: [
+        TabBarView(
+          children: [
+            GoodsPage(),
+            DetailsPage(),
+            EvaluatePage(),
+          ],
+        ),
+        Positioned(
+          bottom: 0,
+          width: ScreenAdapter.width(750),
+          height: ScreenAdapter.height(100),
+          child: Container(
+            color: Colors.white,
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    width: 80,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.shopping_cart),
+                        Text(
+                          '购物车',
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: CommonBtn(
+                    bgColor: Color.fromRGBO(255, 165, 0, 0.9),
+                    text: '加入购物车',
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: CommonBtn(
+                    bgColor: Colors.red,
+                    text: '立即购买',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: this.tabs.length,
       child: Scaffold(
         appBar: _buildAppBar(),
-        body: Stack(
-          children: [
-            TabBarView(
-              children: [
-                GoodsPage(),
-                DetailsPage(),
-                EvaluatePage(),
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              width: ScreenAdapter.width(750),
-              height: ScreenAdapter.height(100),
-              child: Container(
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: 80,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.shopping_cart),
-                            Text(
-                              '购物车',
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.black87),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: CommonBtn(
-                        bgColor: Color.fromRGBO(255, 165, 0, 0.9),
-                        text: '加入购物车',
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: CommonBtn(
-                        bgColor: Colors.red,
-                        text: '立即购买',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+        body: _buildContent(),
       ),
     );
   }

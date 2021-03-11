@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:jdshop/widget/LoadingWidget.dart';
+import 'package:jdshop/widget/SwiperWidget.dart';
 import '../../model/focusModel.dart';
 import '../../model/productModel.dart';
 import '../../utils/tools.dart';
@@ -62,24 +63,12 @@ class _HomePageState extends State<HomePage>
 
   // 轮播图
   Widget _swiperWidget() {
-    if (this._focusList.length > 0) {
-      return AspectRatio(
-        aspectRatio: 2 / 1,
-        child: Swiper(
-          itemBuilder: (BuildContext context, int index) {
-            return Image.network(
-              Tools.formatImgUrl(this._focusList[index].pic),
-              fit: BoxFit.fill,
-            );
-          },
-          itemCount: this._focusList.length,
-          pagination: new SwiperPagination(),
-          autoplay: true,
-        ),
-      );
-    } else {
-      return Container();
-    }
+    List swiperList = [];
+    this._focusList.forEach((item) {
+      var path = Tools.formatImgUrl(item.pic);
+      swiperList.add(path);
+    });
+    return this._focusList.length > 0 ? SwiperWidget(swiperList) : Container();
   }
 
   // 公共的标题
