@@ -116,82 +116,92 @@ class _ProductListPageState extends State<ProductListPage> {
           child: ListView.builder(
             controller: _scrollControler,
             itemBuilder: (context, index) {
-              return Container(
-                color: Colors.white,
-                padding: EdgeInsets.only(left: 8, right: 8),
-                margin: EdgeInsets.only(top: 8),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            margin:
-                                EdgeInsets.only(right: ScreenAdapter.width(20)),
-                            child: Image.network(
-                              Tools.formatImgUrl(this._productList[index].pic),
-                              fit: BoxFit.contain,
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/product-detail',
+                      arguments: {'id': this._productList[index].sId});
+                },
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.only(left: 8, right: 8),
+                  margin: EdgeInsets.only(top: 8),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  right: ScreenAdapter.width(20)),
+                              child: Image.network(
+                                Tools.formatImgUrl(
+                                    this._productList[index].pic),
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 7,
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                top: ScreenAdapter.height(10),
-                                bottom: ScreenAdapter.height(10)),
-                            height: ScreenAdapter.height(180),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  this._productList[index].title,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 14),
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: 8),
-                                      padding: EdgeInsets.fromLTRB(8, 2, 8, 2),
-                                      decoration: BoxDecoration(
-                                          color: Colors.black12,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16.0))),
-                                      child: Text('标签1',
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 14)),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                                      decoration: BoxDecoration(
-                                          color: Colors.black12,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16.0))),
-                                      child: Text('标签2',
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 14)),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  '￥${this._productList[index].price}',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ],
+                          Expanded(
+                            flex: 7,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: ScreenAdapter.height(10),
+                                  bottom: ScreenAdapter.height(10)),
+                              height: ScreenAdapter.height(180),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    this._productList[index].title,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 14),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: 8),
+                                        padding:
+                                            EdgeInsets.fromLTRB(8, 2, 8, 2),
+                                        decoration: BoxDecoration(
+                                            color: Colors.black12,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(16.0))),
+                                        child: Text('标签1',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 14)),
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(4, 2, 4, 2),
+                                        decoration: BoxDecoration(
+                                            color: Colors.black12,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(16.0))),
+                                        child: Text('标签2',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 14)),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '￥${this._productList[index].price}',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    showMore(index)
-                  ],
+                        ],
+                      ),
+                      showMore(index)
+                    ],
+                  ),
                 ),
               );
             },

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class DetailsPage extends StatefulWidget {
-  DetailsPage({Key key}) : super(key: key);
+  final List productDetailList;
+  DetailsPage(this.productDetailList, {Key key}) : super(key: key);
 
   @override
   _DetailsPageState createState() => _DetailsPageState();

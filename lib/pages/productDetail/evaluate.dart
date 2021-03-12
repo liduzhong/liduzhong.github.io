@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 class EvaluatePage extends StatefulWidget {
-  EvaluatePage({Key key}) : super(key: key);
+  final List productDetailList;
+
+  EvaluatePage(this.productDetailList, {Key key}) : super(key: key);
 
   @override
   _EvaluatePageState createState() => _EvaluatePageState();

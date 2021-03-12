@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jdshop/config/Config.dart';
+import 'package:jdshop/model/productDetailModel.dart';
 import 'package:jdshop/services/ScreenAdapter.dart';
 import 'package:jdshop/widget/CommonBtn.dart';
+import 'package:jdshop/widget/LoadingWidget.dart';
 import './details.dart';
 import './evaluate.dart';
 import './goods.dart';
@@ -15,11 +19,23 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   List tabs = ['商品', '详情', '评价'];
+  List _productDetailList = [];
 
   @override
   void initState() {
-    super.initState();
     print(widget.id);
+    super.initState();
+    _getProductData();
+  }
+
+  _getProductData() async {
+    String api = '${Config.domain}api/pcontent?id=${widget.id}';
+    var result = await Dio().get(api);
+    var detail = ProductDetailModel.fromJson(result.data);
+    print(detail);
+    setState(() {
+      this._productDetailList.add(detail.result);
+    });
   }
 
   Widget _buildAppBar() {
@@ -64,9 +80,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       children: [
         TabBarView(
           children: [
-            GoodsPage(),
-            DetailsPage(),
-            EvaluatePage(),
+            GoodsPage(this._productDetailList),
+            DetailsPage(this._productDetailList),
+            EvaluatePage(this._productDetailList),
           ],
         ),
         Positioned(
@@ -121,7 +137,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       length: this.tabs.length,
       child: Scaffold(
         appBar: _buildAppBar(),
-        body: _buildContent(),
+        body: this._productDetailList.length > 0
+            ? _buildContent()
+            : LoadingWidget(),
       ),
     );
   }

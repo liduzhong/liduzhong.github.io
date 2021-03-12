@@ -16,9 +16,15 @@ class SwiperWidget extends StatelessWidget {
         aspectRatio: this.ratio,
         child: Swiper(
           itemBuilder: (BuildContext context, int index) {
-            return Image.network(
-              this.swiperList[index],
-              fit: BoxFit.fill,
+            return InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/photo-view',
+                    arguments: {'url': this.swiperList[index]});
+              },
+              child: Image.network(
+                this.swiperList[index],
+                fit: BoxFit.contain,
+              ),
             );
           },
           itemCount: this.swiperList.length,
